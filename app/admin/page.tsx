@@ -114,7 +114,7 @@ const Admin = () => {
     if (newDescriptor && faceData.length > 0) {
       matchFace();
     }
-  });
+});
 
   // const labeledDescriptors = faceData
   //   .map((user) => {
@@ -218,6 +218,8 @@ const labeledDescriptors = faceData.map((user) => {
         const match = JSON.parse(bestMatch.label);
         if (foundUsers.includes(match.email)) {
           // If user is already verified, show toast message
+          setBoxLabel(match.fullName);
+          setBoxColor("green");
           toast.error(`User ${match.fullName} is already verified.`);
         } else {
           // Add the user to the foundUsers array
