@@ -1,31 +1,43 @@
 {
-  "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "name": "face2",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "serve": "firebase serve --only functions",
-    "shell": "firebase functions:shell",
-    "start": "npm run shell",
-    "dev": "node index.js",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log",
-    "setup": "./postinstall.sh"
-  },
-  "engines": {
-    "node": "8"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed": "ts-node app/hooks/seed.ts"
   },
   "dependencies": {
-    "connect-mongo": "^5.0.0",
-    "express": "^4.17.1",
-    "express-handlebars": "^7.0.7",
-    "express-session": "^1.17.3",
-    "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0",
-    "html": "^1.0.0",
-    "http-server": "^14.1.1",
-    "mongoose": "^7.2.2"
+    "@prisma/client": "^5.20.0",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "face-api.js": "^0.22.2",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.447.0",
+    "next": "14.2.14",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "sweetalert2": "^11.14.1",
+    "tailwind-merge": "^2.5.3",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.1.6"
-  },
-  "private": true
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.14",
+    "postcss": "^8",
+    "prisma": "^5.20.0",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
 }
