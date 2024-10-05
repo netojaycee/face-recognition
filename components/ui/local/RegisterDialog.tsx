@@ -32,6 +32,7 @@ export function RegisterDialog({
     receipt: "",
     faceData: null, // Add a field for face data if necessary
   });
+  const [loading, setLoading] = useState(false);
 
   // Fetch session data (including email) when the component mounts
   useEffect(() => {
@@ -61,6 +62,7 @@ export function RegisterDialog({
     };
 
     try {
+      setLoading(true);
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -68,6 +70,7 @@ export function RegisterDialog({
         },
         body: JSON.stringify(payload), // Send the updated payload
       });
+      setLoading(false);
 
       if (response.ok) {
         // const data = await response.json();
@@ -78,6 +81,7 @@ export function RegisterDialog({
         console.log(`Error: ${error.message}`);
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error registering:", error);
       console.log("Something went wrong. Please try again.");
     }
@@ -185,7 +189,9 @@ export function RegisterDialog({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Register</Button>
+            <Button disabled={loading} type="submit">
+              {loading ? "Loading..." : "Register"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
