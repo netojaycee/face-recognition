@@ -4,11 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx prisma generate && next build",    
     "start": "next start",
-    "lint": "next lint",
-    "seed": "ts-node app/hooks/seed.ts",
-    "prisma": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",

@@ -1,13 +1,11 @@
 import prisma from "@/app/hooks/prisma";
 
 export async function POST(req: Request) {
-  const { email } = await req.json();
+  const { email }: { email?: string } = await req.json();
 
+  // Validate email format
   if (!email) {
-    return new Response(JSON.stringify({ error: 'Email is required' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return createResponse(400, { error: 'A valid email is required' });
   }
 
   try {
@@ -17,10 +15,7 @@ export async function POST(req: Request) {
     });
 
     if (existingUser) {
-      return new Response(JSON.stringify({ error: 'Email already exists' }), {
-        status: 409,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return createResponse(409, { error: 'Email already exists' });
     }
 
     // Create a new user
@@ -28,15 +23,18 @@ export async function POST(req: Request) {
       data: { email },
     });
 
-    return new Response(JSON.stringify({ message: 'Account created successfully', user: newUser }), {
-      status: 201,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    // Return only the relevant user data
+    return createResponse(201, { message: 'Account created successfully', user: { id: newUser.id, email: newUser.email } });
   } catch (error) {
     console.error('Error creating account:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return createResponse(500, { error: 'Internal server error' });
   }
+}
+
+// Helper function to create responses
+function createResponse(status: number, body: object) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
 }
