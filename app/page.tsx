@@ -1,7 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  getUserSession,
   setUserSession,
 } from "./hooks/session";
 import { useRouter } from "next/navigation";
@@ -66,7 +65,6 @@ export default function Home() {
       // Handle error (e.g., display error message)
     }
   };
-  const session = getUserSession();
 
 // console.log(session)
   return (

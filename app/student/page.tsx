@@ -12,6 +12,14 @@ const availableExpressions = [
   "surprised",
 ] as const;
 
+export interface ExpressionDescriptors {
+  neutral: number | null;
+  angry: number | null;
+  happy: number | null;
+  surprised: number | null;
+}
+
+
 const Student = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -21,7 +29,7 @@ const Student = () => {
     happy: false,
     surprised: false,
   });
-  const [expressionDescriptors, setExpressionDescriptors] = useState({
+  const [expressionDescriptors, setExpressionDescriptors] = useState<ExpressionDescriptors>({
     neutral: null,
     angry: null,
     happy: null,
@@ -54,19 +62,19 @@ const Student = () => {
       try {
         // Request the video stream
         const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
-
+    
         // Ensure the videoRef is valid
         if (videoRef.current) {
           // Stop any existing video tracks if they are present
-          const existingStream = videoRef.current.srcObject;
+          const existingStream = videoRef.current.srcObject as MediaStream; // Type assertion here
           if (existingStream) {
             const tracks = existingStream.getTracks();
             tracks.forEach((track) => track.stop());
           }
-
+    
           // Set the new video stream
           videoRef.current.srcObject = stream;
-
+    
           // Play the video
           await videoRef.current.play(); // Await play to catch any errors
           detectFaceExpressions(); // Start detecting face expressions
@@ -75,6 +83,7 @@ const Student = () => {
         console.error("Error accessing webcam: ", error);
       }
     };
+    
 
     const detectFaceExpressions = async () => {
       const videoEl = videoRef.current;

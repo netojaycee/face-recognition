@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getUserSession } from "@/app/hooks/session";
+import { ExpressionDescriptors } from "@/app/student/page";
 
 export function RegisterDialog({
   open,
@@ -20,7 +21,7 @@ export function RegisterDialog({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  faceData: any[]; // Ensure this is the correct type based on your application
+  faceData: ExpressionDescriptors; // Ensure this is the correct type based on your application
 }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -69,7 +70,7 @@ export function RegisterDialog({
       });
 
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
         console.log("Registration successful");
         // Handle success, reset form, close modal, etc.
       } else {

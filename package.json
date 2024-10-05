@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "ts-node app/hooks/seed.ts",
-    "prisma": "prisma generate" 
+    "prisma": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
@@ -17,10 +17,12 @@
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "encoding": "^0.1.13",
     "face-api.js": "^0.22.2",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.447.0",
     "next": "14.2.14",
+    "node-fetch": "^3.3.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",

@@ -1,12 +1,9 @@
-import * as React from "react"
+import * as React from "react";
+import { cn } from "@/lib/utils"; // Assuming cn is a utility function for class names
 
-import { cn } from "@/lib/utils"
-
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+// ForwardRef allows you to forward the ref to the input element
+const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  ({ className, type = "text", ...props }, ref) => {
     return (
       <input
         type={type}
@@ -17,9 +14,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
 
-export { Input }
+Input.displayName = "Input";
+
+export { Input };

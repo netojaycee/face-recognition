@@ -1,4 +1,3 @@
-// @ts-nocheck 
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
@@ -11,7 +10,7 @@ interface FaceEmotionData {
 }
 
 // Define the structure for the face data
-interface FaceData {
+export interface FaceData {
   neutral: FaceEmotionData;
   angry: FaceEmotionData;
   happy: FaceEmotionData;
@@ -24,7 +23,6 @@ interface UserData {
   fullName: string;
   faceData: FaceData;
 }
-
 
 const Admin = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -116,59 +114,100 @@ const Admin = () => {
     if (newDescriptor && faceData.length > 0) {
       matchFace();
     }
-  }, [newDescriptor, faceData]);
+  });
 
-  const labeledDescriptors = faceData
-    .map((user) => {
-      // Ensure user has valid faceData
-      if (user.faceData && Object.keys(user.faceData).length > 0) {
-        // Get descriptors for each emotion
-        const emotionDescriptors = Object.keys(user.faceData)
-          .map((emotion) => {
-            const descriptor = Object.values(
-              user.faceData[emotion]
-            ) as number[]; // Convert descriptor to array
+  // const labeledDescriptors = faceData
+  //   .map((user) => {
+  //     // Ensure user has valid faceData
+  //     if (user.faceData && Object.keys(user.faceData).length > 0) {
+  //       // Get descriptors for each emotion
+  //       const emotionDescriptors = Object.keys(user.faceData)
+  //         .map((emotion) => {
+  //           const descriptor = Object.values(
+  //             user.faceData[emotion]
+  //           ) as number[]; // Convert descriptor to array
 
-            // Check if the emotion descriptor has 128 values
-            if (descriptor.length !== 128) {
-              console.error(
-                `Descriptor for ${user.fullName} in ${emotion} does not have 128 values!`,
-                descriptor
-              );
-              return null;
-            }
+  //           // Check if the emotion descriptor has 128 values
+  //           if (descriptor.length !== 128) {
+  //             console.error(
+  //               `Descriptor for ${user.fullName} in ${emotion} does not have 128 values!`,
+  //               descriptor
+  //             );
+  //             return null;
+  //           }
 
-            return new Float32Array(descriptor); // Convert to Float32Array and return
-          })
-          .filter(Boolean); // Filter out any invalid descriptors
+  //           return new Float32Array(descriptor); // Convert to Float32Array and return
+  //         })
+  //         .filter(Boolean); // Filter out any invalid descriptors
 
-        // If we have valid descriptors, return the user's labeled descriptor
-        if (emotionDescriptors.length > 0) {
-          return {
-            label: JSON.stringify(user), // Use the fullName as the label
-            descriptors: emotionDescriptors, // Store the array of descriptors (one per emotion)
-          };
-        }
+  //       // If we have valid descriptors, return the user's labeled descriptor
+  //       if (emotionDescriptors.length > 0) {
+  //         return {
+  //           label: JSON.stringify(user), // Use the fullName as the label
+  //           descriptors: emotionDescriptors, // Store the array of descriptors (one per emotion)
+  //         };
+  //       }
+  //     }
+  //     return null; // Return null if there are no valid descriptors
+  //   })
+  //   .filter(Boolean);
+
+  // Define the keys as a union of string literals
+type EmotionKey = keyof FaceData;
+
+// When mapping through the emotions, assert that the key is one of the keys in FaceData
+const labeledDescriptors = faceData.map((user) => {
+  if (user.faceData && Object.keys(user.faceData).length > 0) {
+    const emotionDescriptors = Object.keys(user.faceData).map((emotion) => {
+      // Assert the emotion is a valid key
+      const descriptor = Object.values(user.faceData[emotion as EmotionKey]) as number[]; // Convert descriptor to array
+
+      // Check if the emotion descriptor has 128 values
+      if (descriptor.length !== 128) {
+        console.error(
+          `Descriptor for ${user.fullName} in ${emotion} does not have 128 values!`,
+          descriptor
+        );
+        return null;
       }
-      return null; // Return null if there are no valid descriptors
-    })
-    .filter(Boolean);
+
+      return new Float32Array(descriptor); // Convert to Float32Array and return
+    }).filter(Boolean); // Filter out any invalid descriptors
+
+    // If we have valid descriptors, return the user's labeled descriptor
+    if (emotionDescriptors.length > 0) {
+      return {
+        label: JSON.stringify(user), // Use the fullName as the label
+        descriptors: emotionDescriptors, // Store the array of descriptors (one per emotion)
+      };
+    }
+  }
+  return null; // Return null if there are no valid descriptors
+}).filter(Boolean);
+
 
   let faceMatcher: faceapi.FaceMatcher | null = null;
   // Check if labeledDescriptors is not empty
+  const isLabeledDescriptor = (
+    descriptor: any
+  ): descriptor is { label: string; descriptors: Float32Array[] } => {
+    return descriptor !== null;
+  };
+  
   if (labeledDescriptors.length > 0) {
-    // Create the FaceMatcher instance using the mapped descriptors
     faceMatcher = new faceapi.FaceMatcher(
-      labeledDescriptors.map(
-        (descriptor) =>
+      labeledDescriptors
+        .filter(isLabeledDescriptor) // Filter out null values
+        .map((descriptor) => 
           new faceapi.LabeledFaceDescriptors(
             descriptor.label,
             descriptor.descriptors
           )
-      ),
+        ),
       distanceThreshold
     );
   }
+  
 
   // Function to match a new face descriptor with stored descriptors
   const matchFace = () => {

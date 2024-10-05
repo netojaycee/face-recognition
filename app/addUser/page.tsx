@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function AddUser() {
   const [email, setEmail] = useState("");
@@ -25,14 +25,8 @@ export default function AddUser() {
         throw new Error("register failed");
       }
 
-      const data = await response.json();
 
-      // Assuming the response contains the user details
-      const user = {
-        email: data.user.email,
-        id: data.user.id,
-        role: data.user.role,
-      };
+    
     } catch (error) {
       setLoading(false);
       console.error("Error during register:", error);
