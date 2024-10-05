@@ -1,13 +1,35 @@
+// @ts-nocheck 
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 
+// Define the face data for each emotion
+interface FaceEmotionData {
+  [key: string]: number;
+}
+
+// Define the structure for the face data
+interface FaceData {
+  neutral: FaceEmotionData;
+  angry: FaceEmotionData;
+  happy: FaceEmotionData;
+  surprised: FaceEmotionData;
+}
+
+// Define the structure for the user data
+interface UserData {
+  email: string;
+  fullName: string;
+  faceData: FaceData;
+}
+
+
 const Admin = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [faceData, setFaceData] = useState<any[]>([]); // Array to hold face descriptors from the database
+  const [faceData, setFaceData] = useState<UserData[]>([]); // Array to hold face descriptors from the database
   const [newDescriptor, setNewDescriptor] = useState<Float32Array | undefined>(
     undefined
   );
@@ -81,7 +103,7 @@ const Admin = () => {
     const fetchFaceData = async () => {
       const response = await fetch("/api/users"); // Your endpoint for fetching face data
       const data = await response.json();
-      // console.log(data);
+      console.log(data);
       setFaceData(data);
     };
 

@@ -5,14 +5,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { User } from "lucide-react";
 
+type session = {
+  id: string;
+  role: string;
+  email: string;
+};
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
-  const [session, setSession] = useState<any>(null); // State to store session data
+  const [session, setSession] = useState<session>({
+    id: "",
+    role: "",
+    email: "",
+  }); // State to store session data
 
   const logout = () => {
     clearUserSession();
     setIsLoggedIn(false); // Update login status
-    setSession(null); // Clear session data
+    setSession({ id: "", role: "", email: "" }); // Clear session data
     console.log("User logged out successfully");
   };
 
@@ -37,7 +46,10 @@ export default function Header() {
         FACE RECOGNITION SYSTEM
       </p>
       {session ? ( // Render email only if session is available
-        <h2 className="font-bold text-xl flex gap-2"><User />{session.email}</h2>
+        <h2 className="font-bold text-xl flex gap-2">
+          <User />
+          {session.email}
+        </h2>
       ) : null}
       {!isHome ? (
         <Link href="/" className="bg-red-500 p-3 rounded-lg">

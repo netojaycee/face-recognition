@@ -33,12 +33,7 @@ const Student = () => {
     false,
     false,
   ]);
-  const initialFaceDataCollection = {
-    neutral: { active: false, data: {} },
-    angry: { active: false, data: {} },
-    happy: { active: false, data: {} },
-    surprised: { active: false, data: {} },
-  };
+ 
 
   const [isDialogOpen, setDialogOpen] = useState(false);
   const inputSize = 512;
@@ -158,7 +153,7 @@ const Student = () => {
     };
 
     loadModels();
-  }, []);
+  }, [hasAllExpressions]);
 
   return (
     <div className="flex">

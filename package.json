@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node app/hooks/seed.ts"
+    "seed": "ts-node app/hooks/seed.ts",
+    "prisma": "prisma generate" 
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",

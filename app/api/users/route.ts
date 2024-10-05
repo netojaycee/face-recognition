@@ -1,6 +1,6 @@
 import prisma from "@/app/hooks/prisma";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     // Fetch all users with their face data
     const usersWithFaceData = await prisma.user.findMany({

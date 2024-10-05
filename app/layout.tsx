@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { getUserSession } from "./hooks/session";
 import Header from "../components/header";
 import { Toaster } from "react-hot-toast";
 

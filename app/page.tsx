@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import {
-  clearUserSession,
   getUserSession,
   setUserSession,
 } from "./hooks/session";
@@ -9,14 +8,14 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [showLogin, setShowLogin] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  // const [showLogin, setShowLogin] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    const session = getUserSession();
-    setIsLoggedIn(!!session); // Check if session exists and update state
-  }, []);
+  // useEffect(() => {
+  //   const session = getUserSession();
+  //   setIsLoggedIn(!!session); // Check if session exists and update state
+  // }, []);
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,8 +48,8 @@ export default function Home() {
 
       // Set the user session in cookies
       setUserSession(user);
-      setShowLogin(false);
-      setIsLoggedIn(true); // Update login status
+      // setShowLogin(false);
+      // setIsLoggedIn(true); // Update login status
 
       // console.log("Login successful:", data);
       // console.log(data.user.role);

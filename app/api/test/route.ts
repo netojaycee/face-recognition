@@ -1,4 +1,4 @@
-export async function GET(req: Request) {
+export async function GET() {
     // Send a response to the client
     return new Response(JSON.stringify({ message: "Hello world!" }), {
       status: 200,
